@@ -162,6 +162,48 @@ export default function Info() {
             Nie je to tiesňová linka. Keď horí alebo tečie, volaj človeka, nie appku.
           </p>
         </section>
+
+        <section className="hair mt-10 border-t pt-6">
+          <p className="text-dim">za jednu noc</p>
+          <p className="mt-1">
+            Celý Kriklún vznikol v noci z 26. na 27. augusta 2026, medzi 23:57 a 3:10.
+          </p>
+          <ul className="mt-3 space-y-1">
+            <li>
+              <span className="text-dim">trvanie</span> — 3 hodiny 12 minút
+            </li>
+            <li>
+              <span className="text-dim">kód</span> — 1 938 riadkov, 42 súborov, 6 commitov
+            </li>
+            <li>
+              <span className="text-dim">spolupráca</span> — 15 mojich správ, 288 odpovedí modelu
+            </li>
+            <li>
+              <span className="text-dim">tokeny</span> — 57,6 milióna
+            </li>
+            <li>
+              <span className="text-dim">cena</span> — asi 42 dolárov, keby sa to platilo cez API
+            </li>
+          </ul>
+          <p className="mt-4">
+            Píšem to sem preto, lebo to je celá pointa. Bol som naštvaný z toho, ako
+            to na chodbe vyzerá, presne ako všetci ostatní. Dalo sa to napísať na
+            Facebook. Dalo sa to nasprejovať na stenu.
+          </p>
+          <p className="mt-2">
+            Vybral som si tretiu možnosť a stálo ma to jednu noc.
+            Nehovorím, že každý má postaviť appku — hovorím, že hnev sa dá minúť
+            aj na niečo, po čom zostane niečo použiteľné.
+          </p>
+          <p className="mt-2 text-dim">
+            Postavené s Claude Opus 5. Kód je otvorený, nech si to vie ktokoľvek
+            pozrieť a spraviť lepšie. Celý ten rozhovor je archivovaný — nie je
+            verejný, lebo sú v ňom mená susedov, ale existuje.
+          </p>
+          <p className="mt-4 text-dim">
+            Ahoj tebe, kto to čítaš neskôr.
+          </p>
+        </section>
       </div>
     </>
   );
