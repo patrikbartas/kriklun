@@ -109,7 +109,7 @@ export default function Nahlasit() {
       >
         {photo ? (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={photo} alt="" className="w-full object-cover" style={{ maxHeight: 340 }} />
+          <img src={photo} alt="" className="aspect-square w-full object-cover" />
         ) : (
           <span>{kind === "oznam" ? "foto (nepovinné)" : "odfotiť"}</span>
         )}

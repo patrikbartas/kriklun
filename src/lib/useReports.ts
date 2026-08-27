@@ -25,5 +25,9 @@ export function useReports() {
     setRows((prev) => prev?.map((x) => (x.id === r.id ? r : x)) ?? prev);
   }, []);
 
-  return { rows, err, reload: load, replace };
+  const remove = useCallback((id: string) => {
+    setRows((prev) => prev?.filter((x) => x.id !== id) ?? prev);
+  }, []);
+
+  return { rows, err, reload: load, replace, remove };
 }

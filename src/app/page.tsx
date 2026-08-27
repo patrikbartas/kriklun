@@ -10,7 +10,7 @@ import { isExpired } from "@/lib/time";
 type Filter = "vsetko" | "problem" | "oznam";
 
 export default function Nastenka() {
-  const { rows, err, replace } = useReports();
+  const { rows, err, replace, remove } = useReports();
   const [filter, setFilter] = useState<Filter>("vsetko");
   const [showDone, setShowDone] = useState(false);
 
@@ -65,7 +65,7 @@ export default function Nastenka() {
       )}
 
       {list.map((r) => (
-        <ReportCard key={r.id} r={r} onChange={replace} />
+        <ReportCard key={r.id} r={r} onChange={replace} onDelete={remove} />
       ))}
     </>
   );

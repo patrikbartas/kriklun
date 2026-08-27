@@ -59,6 +59,13 @@ async function storePhoto(dataUrl: string | null): Promise<string | null> {
   return sb().storage.from(BUCKET).getPublicUrl(name).data.publicUrl;
 }
 
+/** Nazov suboru z verejnej URL. Fotka z ineho zdroja vrati null. */
+function photoName(url: string | null): string | null {
+  if (!url) return null;
+  const i = url.indexOf(`/${BUCKET}/`);
+  return i === -1 ? null : decodeURIComponent(url.slice(i + BUCKET.length + 2));
+}
+
 export async function listReports(): Promise<Report[]> {
   if (!usingSupabase) {
     const rows = await readLocal();
@@ -204,6 +211,42 @@ export async function listWatchers(reportId: string): Promise<Watcher[]> {
     .eq("report_id", reportId);
   if (error) throw new Error(error.message);
   return (data ?? []) as Watcher[];
+}
+
+/**
+ * Zmaze hlasenie aj s jeho zvoncekmi a fotkou.
+ *
+ * Fotku treba zmazat zvlast: bucket je verejny, takze po zmazani riadku by
+ * URL stale fungovala. Pri mazani obsahu, ktory tam nema byt, to nestaci.
+ */
+export async function deleteReport(id: string): Promise<boolean> {
+  if (!usingSupabase) {
+    const rows = await readLocal();
+    const next = rows.filter((r) => r.id !== id);
+    if (next.length === rows.length) return false;
+    await writeLocal(next);
+    const w = await readWatch();
+    await writeWatch(w.filter((x) => x.report_id !== id));
+    return true;
+  }
+
+  const { data: row, error: readErr } = await sb()
+    .from("reports")
+    .select("photo_url")
+    .eq("id", id)
+    .maybeSingle();
+  if (readErr) throw new Error(readErr.message);
+  if (!row) return false;
+
+  await sb().from("watchers").delete().eq("report_id", id);
+
+  const { error } = await sb().from("reports").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+
+  const name = photoName(row.photo_url as string | null);
+  if (name) await sb().storage.from(BUCKET).remove([name]);
+
+  return true;
 }
 
 export async function removeWatcher(id: string): Promise<boolean> {

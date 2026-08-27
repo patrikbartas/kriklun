@@ -7,7 +7,7 @@ import { useReports } from "@/lib/useReports";
 import { getName } from "@/lib/me";
 
 export default function Moje() {
-  const { rows, replace } = useReports();
+  const { rows, replace, remove } = useReports();
   const [me, setMe] = useState<string | null>(null);
 
   useEffect(() => setMe(getName()), []);
@@ -34,7 +34,7 @@ export default function Moje() {
       )}
 
       {mine.map((r) => (
-        <ReportCard key={r.id} r={r} onChange={replace} />
+        <ReportCard key={r.id} r={r} onChange={replace} onDelete={remove} />
       ))}
     </>
   );

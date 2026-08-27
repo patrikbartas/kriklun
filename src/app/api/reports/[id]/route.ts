@@ -1,9 +1,25 @@
 import { NextResponse } from "next/server";
-import { setStatus, listWatchers } from "@/lib/store";
+import { setStatus, listWatchers, deleteReport } from "@/lib/store";
 import { notifyStatusChange } from "@/lib/mail";
 import { STATUSES, type Status } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
+
+// Ziadny fallback pin. Ked nie je nastaveny OPERATOR_PIN, operator je zavrety.
+// Uhadnutelny default v produkcii by znamenal, ze appku vie menit ktokolvek.
+function pinFails(sent: unknown): NextResponse | null {
+  const pin = process.env.OPERATOR_PIN;
+  if (!pin) {
+    return NextResponse.json(
+      { error: "operátor nie je nastavený (chýba OPERATOR_PIN)" },
+      { status: 503 },
+    );
+  }
+  if (String(sent ?? "") !== pin) {
+    return NextResponse.json({ error: "zly pin" }, { status: 401 });
+  }
+  return null;
+}
 
 export async function PATCH(
   req: Request,
@@ -12,18 +28,8 @@ export async function PATCH(
   const { id } = await params;
   const b = await req.json();
 
-  // Ziadny fallback pin. Ked nie je nastaveny OPERATOR_PIN, operator je zavrety.
-  // Uhadnutelny default v produkcii by znamenal, ze stavy vie menit ktokolvek.
-  const pin = process.env.OPERATOR_PIN;
-  if (!pin) {
-    return NextResponse.json(
-      { error: "operátor nie je nastavený (chýba OPERATOR_PIN)" },
-      { status: 503 },
-    );
-  }
-  if (String(b.pin ?? "") !== pin) {
-    return NextResponse.json({ error: "zly pin" }, { status: 401 });
-  }
+  const bad = pinFails(b.pin);
+  if (bad) return bad;
 
   const status = b.status as Status;
   if (!STATUSES.some((s) => s.id === status)) {
@@ -49,6 +55,29 @@ export async function PATCH(
     }
 
     return NextResponse.json(row);
+  } catch (e) {
+    return NextResponse.json({ error: String(e) }, { status: 500 });
+  }
+}
+
+/**
+ * Zmazanie hlasenia. Docasne riesenie moderacie: kym nie su ucty, je jediny
+ * operator a ten vie odstranit vlastny omyl aj cudzi obsah, ktory tam nepatri.
+ */
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const { id } = await params;
+  const b = await req.json().catch(() => ({}));
+
+  const bad = pinFails(b.pin);
+  if (bad) return bad;
+
+  try {
+    const done = await deleteReport(id);
+    if (!done) return NextResponse.json({ error: "nenajdene" }, { status: 404 });
+    return NextResponse.json({ ok: true });
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 });
   }

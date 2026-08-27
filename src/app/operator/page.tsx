@@ -120,8 +120,7 @@ export default function Operator() {
             <img
               src={card.photo_url}
               alt=""
-              className="hair mb-3 w-full border object-cover"
-              style={{ maxHeight: 380 }}
+              className="hair mb-3 aspect-square w-full border object-cover"
             />
           )}
 

@@ -5,6 +5,31 @@ Prehľad zámeru je v `README.md`.
 
 Beží na `https://kriklun.com`.
 
+## [0.2.2] — 2026-08-27
+
+Prvý deň naostro ukázal dve diery: nedá sa opraviť vlastný omyl a nedá sa
+odstrániť obsah, ktorý tam nepatrí.
+
+### Added
+- Mazanie hlásenia. Tlačidlo `zmazať` je na karte na nástenke aj v denníčku,
+  ale vidí ho len ten, kto má v prehliadači uložený operátorský pin. Právo
+  overuje server, `DELETE /api/reports/[id]` s tým istým pinom ako zmena stavu.
+- `deleteReport()` maže aj zvončeky a fotku v úložisku. Bucket je verejný, takže
+  samotné zmazanie riadku by URL fotky nechalo živú — a pri obsahu, ktorý tam
+  nemá byť, je práve fotka to podstatné.
+
+### Changed
+- Fotky sa zobrazujú štvorcovo (`aspect-square`, orezanie na stred). Nástenka má
+  tým rovnaký rytmus kariet bez ohľadu na to, či niekto fotil na výšku alebo na
+  šírku. Orezanie je len v zobrazení, v úložisku zostáva celá fotka.
+
+### Notes
+- Mazanie je natvrdo, bez koša. Pri pilote na jednom poschodí je jednoduchosť
+  cennejšia než história — kôš by znamenal ďalší stĺpec, ďalší filter a ďalšiu
+  obrazovku, kde ho vysypať.
+- Je to dočasné riešenie moderácie. Kým nie sú účty, drží ho jediný pin, ktorý
+  pozná operátor. Kto pin má, vie zmazať čokoľvek.
+
 ## [0.2.1] — 2026-08-27
 
 Prvé ostré nasadenie. Databáza, úložisko fotiek, doména aj maily overené

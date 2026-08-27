@@ -34,6 +34,18 @@ o tri týždne“ je plnohodnotná odpoveď.
 - `/info` — vysvetlenie v civilnom jazyku
 - `/operator` — fronta kariet pre toho, kto odpovedá (chránené pinom)
 
+## Moderácia
+
+Nahlasovať môže ktokoľvek bez účtu, takže musí existovať spôsob, ako niečo
+odstrániť. Kto má v prehliadači uložený operátorský pin, vidí na každej karte
+`zmazať`. Maže sa natrvalo a naraz — hlásenie, jeho zvončeky aj fotka
+v úložisku. Fotku treba mazať zvlášť, bucket je verejný a samotné zmazanie
+riadku by nechalo URL fotky živú.
+
+Je to dočasné. Právo stojí na jednom pine, ktorý pozná operátor — kto ho má,
+vie zmazať čokoľvek. Na jedno poschodie, kde sa všetci poznajú, to stačí;
+na viac poschodí to bude chcieť účty.
+
 ## Spustenie
 
 ```bash
@@ -98,7 +110,9 @@ kľúčom na serveri. Preto je RLS zapnuté a zámerne bez politík: anon kľú�
 nikde nepoužíva, takže nie je čo povoľovať.
 
 Fotka sa zmenší v prehliadači na 1600 px / JPEG 0.82 ešte pred odoslaním. Bez
-toho by fotky z mobilu narazili na limit veľkosti requestu.
+toho by fotky z mobilu narazili na limit veľkosti requestu. Zobrazuje sa
+štvorcovo a orezaná na stred, aby mala nástenka rovnaký rytmus; orezanie je len
+v CSS, uložená zostáva celá fotka.
 
 Notifikácie sú vždy zabalené v `try/catch`. Výpadok mailov nesmie zablokovať
 zápis hlásenia ani zmenu stavu.

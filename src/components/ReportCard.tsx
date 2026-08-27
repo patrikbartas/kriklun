@@ -5,14 +5,24 @@ import StatusDot from "./StatusDot";
 import { BellIcon } from "@/components/ui/bell";
 import { ageLabel } from "@/lib/time";
 import { statusLabel, type Report } from "@/lib/types";
-import { hasPlused, markPlused, getMail, setMail, isWatching, markWatching } from "@/lib/me";
+import {
+  hasPlused,
+  markPlused,
+  getMail,
+  setMail,
+  isWatching,
+  markWatching,
+  getPin,
+} from "@/lib/me";
 
 export default function ReportCard({
   r,
   onChange,
+  onDelete,
 }: {
   r: Report;
   onChange?: (r: Report) => void;
+  onDelete?: (id: string) => void;
 }) {
   const [plused, setPlused] = useState(() => hasPlused(r.id));
   const [count, setCount] = useState(r.plus_ones);
@@ -20,6 +30,8 @@ export default function ReportCard({
   const [asking, setAsking] = useState(false);
   const [mail, setMailInput] = useState("");
   const [err, setErr] = useState<string | null>(null);
+  // Tlacidlo vidi len ten, kto ma v prehliadaci pin. Pravo overuje az server.
+  const [operator] = useState(() => Boolean(getPin()));
   const oznam = r.kind === "oznam";
 
   async function plus() {
@@ -48,6 +60,21 @@ export default function ReportCard({
     setAsking(false);
   }
 
+  async function remove() {
+    if (!confirm("zmazať natrvalo, aj s fotkou?")) return;
+    setErr(null);
+    const res = await fetch(`/api/reports/${r.id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pin: getPin() }),
+    });
+    if (!res.ok) {
+      setErr((await res.json()).error ?? "nepodarilo sa zmazať");
+      return;
+    }
+    onDelete?.(r.id);
+  }
+
   function bell() {
     if (watching) return;
     const known = getMail();
@@ -72,8 +99,7 @@ export default function ReportCard({
         <img
           src={r.photo_url}
           alt=""
-          className="hair mb-3 w-full border object-cover"
-          style={{ maxHeight: 340 }}
+          className="hair mb-3 aspect-square w-full border object-cover"
         />
       )}
 
@@ -88,6 +114,12 @@ export default function ReportCard({
 
       <footer className="mt-3 flex items-center gap-4 text-dim">
         <span>{r.author}</span>
+
+        {operator && (
+          <button onClick={remove} className="active:opacity-60">
+            zmazať
+          </button>
+        )}
 
         <button
           onClick={plus}
