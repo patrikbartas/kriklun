@@ -88,10 +88,13 @@ export default function ReportCard({
 
   return (
     <article className="hair border-t py-4">
-      <header className="mb-2 flex items-center gap-2">
-        {oznam ? <span className="text-dim">oznam</span> : <StatusDot status={r.status} />}
-        <span className="text-dim">{r.zone}</span>
-        <span className="ml-auto text-dim">{ageLabel(r.created_at)}</span>
+      {/* Kto to nahlasil, patri nad text, nie pod odpoved operatora. */}
+      <header className="mb-2 flex items-center gap-2 text-dim">
+        <span className="min-w-0 truncate">
+          {oznam ? "oznam · " : ""}
+          {r.author} · {r.zone}
+        </span>
+        <span className="ml-auto shrink-0">{ageLabel(r.created_at)}</span>
       </header>
 
       {r.photo_url && (
@@ -105,16 +108,41 @@ export default function ReportCard({
 
       {r.text && <p className="whitespace-pre-wrap">{r.text}</p>}
 
-      {!oznam && r.status !== "nahlasene" && (
-        <p className="mt-2 text-dim">
-          {statusLabel(r.status)}
-          {r.status_note ? ` — ${r.status_note}` : ""}
-        </p>
+      {/*
+        Druhy hlas. Hlasenie a odpoved su dvaja rozni hovoriaci, tak maju dva
+        bloky. Ked odpoved neprisla, blok to povie nahlas - prazdne miesto je
+        tu ta najdolezitejsia informacia.
+      */}
+      {!oznam && (
+        /*
+          Linka je zapustena zlava a bodka visi vedla nej. Keby siahala cez celu
+          sirku, citala by sa rovnako ako linka medzi kartami a odpoved by
+          vyzerala ako dalsie hlasenie, nie ako reakcia na to nad nou.
+        */
+        <div className="hair relative ml-[17px] flex gap-2 border-t pt-3">
+          <span className="absolute left-[-17px] top-[calc(0.75rem+5px)]">
+            <StatusDot status={r.status} />
+          </span>
+
+          {r.status === "nahlasene" ? (
+            <p className="text-dim">zatiaľ bez odpovede</p>
+          ) : (
+            <>
+              <div className="min-w-0 flex-1">
+                <p>
+                  <span className="text-dim">operátor · </span>
+                  {statusLabel(r.status)}
+                </p>
+                {r.status_note && <p className="text-dim">{r.status_note}</p>}
+              </div>
+              <span className="shrink-0 text-dim">{ageLabel(r.updated_at)}</span>
+            </>
+          )}
+        </div>
       )}
 
+      {/* Paticka patri tomu, kto sa pozera - nie ani jednemu z dvoch hlasov. */}
       <footer className="mt-3 flex items-center gap-4 text-dim">
-        <span>{r.author}</span>
-
         {operator && (
           <button onClick={remove} className="active:opacity-60">
             zmazať

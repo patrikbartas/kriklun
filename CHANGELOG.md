@@ -5,6 +5,36 @@ Prehľad zámeru je v `README.md`.
 
 Beží na `https://kriklun.com`.
 
+## [0.2.3] — 2026-08-27
+
+Karta hlásenia bola jeden odsek, hoci sú v nej dvaja hovoriaci. Podpis autora
+stál pod odpoveďou operátora, takže to čítalo tak, že si autor odpovedá sám.
+
+### Changed
+- Podpis autora sa presunul nad text, do hlavičky ku zóne: `patrik · WC M`.
+  Tým zmizne zámena, kto čo povedal.
+- Odpoveď operátora je samostatný blok za vlasovou linkou, s vlastným časom
+  (`updated_at`) a s vlastným podpisom `operátor`. Bodka stavu sa presunula
+  z hlavičky sem — bodka *je* tá reakcia.
+- Linka nad odpoveďou je zapustená zľava a bodka visí vedľa nej. Keby siahala
+  cez celú šírku, čítala by sa rovnako ako linka medzi kartami a odpoveď by
+  vyzerala ako ďalšie hlásenie namiesto reakcie na to nad ňou.
+- Pätička nesie už len akcie čitateľa (`aj mňa`, zvonček, `zmazať`).
+- Operátorská fronta má rovnakú hlavičku: `patrik · WC M · +3` a `otvorené 4h`.
+  Duplicitný riadok s autorom pod textom zmizol.
+
+### Added
+- Keď odpoveď ešte neprišla, blok to povie nahlas: `zatiaľ bez odpovede`.
+  Prázdne miesto je na tejto karte tá najdôležitejšia informácia, tak nemá byť
+  prázdne, ale pomenované.
+
+### Notes
+- Formát času sa **nemenil**. `4h` a `2d` zostávajú, lebo relatívny vek je tlak,
+  kým dátum je archív — čitateľ by si musel rozdiel odpočítať sám. Presný čas
+  nahlásenia je stále v databáze, keby bol raz potrebný ako dôkaz.
+- Dva bloky sú strop, nie začiatok vlákna. Vo chvíli, keď pod fotkou pribudne
+  piata replika, je z Kriklúna Facebook — čiže presne to, čo nahrádza.
+
 ## [0.2.2] — 2026-08-27
 
 Prvý deň naostro ukázal dve diery: nedá sa opraviť vlastný omyl a nedá sa

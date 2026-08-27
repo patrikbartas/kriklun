@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import StatusDot from "@/components/StatusDot";
 import { useReports } from "@/lib/useReports";
 import { ageLabel } from "@/lib/time";
-import { QUEUE_STATUSES, statusLabel, type Report, type Status } from "@/lib/types";
+import { QUEUE_STATUSES, type Report, type Status } from "@/lib/types";
 import { getPin, setPin } from "@/lib/me";
 import Wordmark from "@/components/Wordmark";
 
@@ -108,11 +108,14 @@ export default function Operator() {
 
       {card && (
         <>
-          <div className="mb-2 flex items-center gap-2">
+          {/* Rovnaka hlavicka ako na nastenke: kto a odkial, nie co uz odpovedal. */}
+          <div className="mb-2 flex items-center gap-2 text-dim">
             <StatusDot status={card.status} />
-            <span className="text-dim">{card.zone}</span>
-            <span className="text-dim">· {statusLabel(card.status)}</span>
-            <span className="ml-auto text-dim">otvorené {ageLabel(card.created_at)}</span>
+            <span className="min-w-0 truncate">
+              {card.author} · {card.zone}
+              {card.plus_ones > 0 ? ` · +${card.plus_ones}` : ""}
+            </span>
+            <span className="ml-auto shrink-0">otvorené {ageLabel(card.created_at)}</span>
           </div>
 
           {card.photo_url && (
@@ -124,11 +127,7 @@ export default function Operator() {
             />
           )}
 
-          {card.text && <p className="mb-2 whitespace-pre-wrap">{card.text}</p>}
-          <p className="mb-5 text-dim">
-            {card.author}
-            {card.plus_ones > 0 ? ` · +${card.plus_ones}` : ""}
-          </p>
+          {card.text && <p className="mb-5 whitespace-pre-wrap">{card.text}</p>}
 
           {asking && (
             <input

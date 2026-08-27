@@ -26,6 +26,13 @@ toho, že sa vec nedá opraviť — vzniká z toho, že nevieš, či o nej vôbe
 Preto má stav `teraz to nejde` povinný dôvod. „Vieme o tom, náhradný diel príde
 o tri týždne“ je plnohodnotná odpoveď.
 
+Karta je preto postavená ako dialóg dvoch ľudí, nie ako záznam. Hore je hlásenie
+podpísané tým, kto ho napísal, pod ním za zapustenou linkou odpoveď podpísaná
+operátorom. Keď odpoveď ešte neprišla, blok to povie nahlas — `zatiaľ bez
+odpovede` je na tejto karte tá najdôležitejšia informácia. Dva bloky sú zároveň
+strop: vo chvíli, keď pod fotkou pribudne piata replika, je z toho Facebook,
+čiže presne to, čo Kriklún nahrádza.
+
 ## Obrazovky
 
 - `/` — nástenka: čo je otvorené a ako dlho
