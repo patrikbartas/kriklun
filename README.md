@@ -5,6 +5,9 @@
 Nahlasovanie pokazených vecí a lokálne oznamy pre jednu chodbu v budove
 s viacerými nájomníkmi.
 
+**Beží na [kriklun.com](https://kriklun.com).** Pilot je jedno poschodie,
+jedenásť ateliérov.
+
 Vzniklo to zdola, na jednom poschodí, po tom, čo sa neporiadok počas stavebných
 prác skončil hádkou na Facebooku a nápismi sprejom na spoločnej stene. Obe tie
 potreby sú legitímne — označiť, čo je pokazené, a povedať, čo je čie. Chýbala len
@@ -58,6 +61,36 @@ ako data URL. Nič netreba nastavovať. Reset: zmaž `.data/`.
 
 Bez SMTP premenných sa maily ticho preskočia a nič sa nerozbije.
 
+**Pozor na `#` v hesle.** V `.env` súbore sa neuvedený `#` berie ako začiatok
+komentára a hodnota sa ticho useknie — prejaví sa to ako `535 authentication
+failed`. Heslo s `#` daj do úvodzoviek. Vo Verceli naopak úvodzovky nepíš,
+tam sa hodnota ukladá surová.
+
+## Nasadenie
+
+Vercel, napojený na tento repozitár. Push do `main` spustí produkčný build.
+
+Vercel na Hobby pláne odmietne buildovať commit, ktorého autora nevie priradiť
+ku GitHub účtu — mail v `git config user.email` sa musí presne zhodovať
+s adresou registrovanou na GitHube.
+
+## Ako fungujú notifikácie
+
+Sú to dva oddelené toky a chodia iným ľuďom.
+
+**Nové hlásenie → operátorovi.** Jedna adresa, `NOTIFY_EMAIL`. Bez toho by musel
+operátor appku sám kontrolovať, či niekto niečo napísal — a nedá sa odpovedať do
+24 hodín na niečo, o čom nevieš. Keď rolu prevezme niekto iný, mení sa len táto
+premenná.
+
+**Zmena stavu → tým, čo majú zvonček.** Kto si na hlásenie dá zvonček alebo
+nechá mail pri nahlasovaní, dostane správu, keď sa stav pohne. Žiadny účet,
+mail si pamätá prehliadač. Odhlasovací odkaz je v každej správe.
+
+To druhé je celý zmysel produktu: nahlásiš, zabudneš na to, a o štyri dni ti
+príde „teraz to nejde — čakáme na diel, príde do troch týždňov“. Nemusíš nič
+kontrolovať ani sa pýtať.
+
 ## Ako to je poskladané
 
 Klient nikdy nesiaha na Supabase priamo — všetko ide cez `/api/*` so service role
@@ -74,6 +107,12 @@ zápis hlásenia ani zmenu stavu.
 
 Hlásenia, fotky, mená autorov aj mailové adresy žijú v databáze a v úložisku,
 nie v kóde. Kľúče sú v `.env.local`, ktorý je v `.gitignore`.
+
+## Čo je otvorené
+
+Musí existovať človek, ktorý odpovedá. Nástenka, na ktorú týždeň nikto neklikne
+„vidíme to“, je stena neodpovedaných červených bodiek — a to je horšie než nič.
+Zatiaľ je tou rolou autor projektu.
 
 ## Čo tu zámerne nie je
 

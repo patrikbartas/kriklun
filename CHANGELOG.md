@@ -3,6 +3,28 @@
 Formát: `Added`, `Changed`, `Fixed`, `Notes`.
 Prehľad zámeru je v `README.md`.
 
+Beží na `https://kriklun.com`.
+
+## [0.2.1] — 2026-08-27
+
+Prvé ostré nasadenie. Databáza, úložisko fotiek, doména aj maily overené
+proti produkcii, nie len lokálne.
+
+### Added
+- Nasadenie na Vercel napojené na GitHub. Push do `main` spustí produkčný build.
+- Doména `kriklun.com`.
+
+### Notes
+- Vercel na Hobby pláne odmietne buildovať commit, ktorého autora nevie priradiť
+  ku GitHub účtu. Mail v `git config user.email` sa musí presne zhodovať
+  s adresou registrovanou na GitHube — Gmail ignoruje bodky v adrese, GitHub nie.
+- **Ak heslo obsahuje `#`, musí byť v `.env` v úvodzovkách.** Neuvedený `#` sa
+  berie ako začiatok komentára a hodnota sa ticho useknie. Prejaví sa to ako
+  `535 authentication failed`, pričom `transporter.verify()` môže prejsť.
+  Vo Verceli sa naopak úvodzovky nepíšu — hodnota sa ukladá surová.
+- Operátorská rola zatiaľ nie je odovzdaná. `NOTIFY_EMAIL` je nastavený na autora
+  projektu; keď rolu prevezme niekto z prevádzky, mení sa len táto premenná.
+
 ## [0.2.0] — 2026-08-27
 
 ### Added
