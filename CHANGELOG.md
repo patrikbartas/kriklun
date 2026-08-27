@@ -5,6 +5,40 @@ Prehľad zámeru je v `README.md`.
 
 Beží na `https://kriklun.com`.
 
+## [0.2.4] — 2026-08-27
+
+Karta mala od 0.2.3 dva hlasy, ale pätička s `aj mňa` a zvončekom stála pod
+odpoveďou operátora — čiže akcie čitateľa vyzerali ako súčasť odpovede.
+A bodka stavu visela pri operátorovi, hoci hovorí o veci, nie o ňom.
+
+### Changed
+- Bodka stavu sa presunula z odpovede pred text hlásenia. Hovorí tým „táto vec
+  je v stave X", nie „operátor povedal X". Na nástenke z toho vznikne jeden
+  čitateľný stĺpec bodiek po ľavej hrane textov — dá sa skenovať bez čítania.
+  Visí v ľavom stĺpci, nie inline, aby druhý riadok textu začal tam, čo prvý.
+  Keď hlásenie nemá text (holá fotka), bodka sa vráti do hlavičky.
+- Pätička sa presunula spod odpovede pod text hlásenia, kam patrí. Odpoveď
+  operátora je teraz posledná a je jasne oddelená — 28 px nad linkou proti
+  16 px pod textom.
+- Podpis `operátor` nahradila ikonka cigarety, ktorá visí na ľavom konci
+  zapustenej linky. Ostáva neutrálna: nikdy nedostane farbu stavu a animuje sa
+  len na hover, aby nesúťažila s bodkou o pozornosť.
+- `oznam` nemá stav, tak nemá ani bodku — odsadenie textu si však necháva, aby
+  nástenka mala jednu ľavú hranu textu.
+
+### Added
+- Fotka dostane na hover rámik vo farbe stavu (dve vlásočnice, druhá zvnútra,
+  aby sa mriežka neposunula). Je to zosilnenie, nie nosič — na dotykovom
+  displeji hover neexistuje, tak farbu nesie bodka pri texte.
+
+### Fixed
+- Pod textom hlásenia chýbal vzduch, linka odpovede naň nadväzovala natesno.
+  Na `/operator` tá medzera bola, na nástenke vypadla.
+
+### Notes
+- `package.json` bol na `0.2.1`, hoci changelog bol na `0.2.3`. Zrovnané
+  na `0.2.4`.
+
 ## [0.2.3] — 2026-08-27
 
 Karta hlásenia bola jeden odsek, hoci sú v nej dvaja hovoriaci. Podpis autora

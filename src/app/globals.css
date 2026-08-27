@@ -103,3 +103,20 @@ option {
   background: var(--bg);
   color: var(--fg);
 }
+
+/*
+  Fotka dostane na hover ramik vo farbe stavu. Je to zosilnenie, nie nosic -
+  farbu na karte nesie bodka pri texte, ktora funguje aj na dotykovom displeji,
+  kde hover neexistuje.
+*/
+.photo {
+  transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+@media (hover: hover) {
+  .photo:hover {
+    border-color: var(--accent, var(--line));
+    /* Druha vlasocnica dnu, nech je farba vidno. Zvonka by ramik posunul mriezku. */
+    box-shadow: inset 0 0 0 1px var(--accent, transparent);
+  }
+}

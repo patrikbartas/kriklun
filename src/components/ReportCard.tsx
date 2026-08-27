@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import StatusDot from "./StatusDot";
+import StatusDot, { statusColor } from "./StatusDot";
 import { BellIcon } from "@/components/ui/bell";
+import { CigaretteIcon } from "@/components/ui/cigarette";
 import { ageLabel } from "@/lib/time";
 import { statusLabel, type Report } from "@/lib/types";
 import {
@@ -33,6 +34,12 @@ export default function ReportCard({
   // Tlacidlo vidi len ten, kto ma v prehliadaci pin. Pravo overuje az server.
   const [operator] = useState(() => Boolean(getPin()));
   const oznam = r.kind === "oznam";
+  // Oznam nema stav, tak nema ani bodku. Odsadenie textu si necha, nech ma
+  // nastenka jednu lavu hranu textu a nevyzera roztrhane.
+  const dot = !oznam;
+  // Bodka patri k textu hlasenia. Ked text nie je (hola fotka), nema kde visiet,
+  // tak sa vrati do hlavicky.
+  const dotInHeader = dot && !r.text;
 
   async function plus() {
     if (plused) return;
@@ -90,6 +97,7 @@ export default function ReportCard({
     <article className="hair border-t py-4">
       {/* Kto to nahlasil, patri nad text, nie pod odpoved operatora. */}
       <header className="mb-2 flex items-center gap-2 text-dim">
+        {dotInHeader && <StatusDot status={r.status} />}
         <span className="min-w-0 truncate">
           {oznam ? "oznam · " : ""}
           {r.author} · {r.zone}
@@ -102,47 +110,34 @@ export default function ReportCard({
         <img
           src={r.photo_url}
           alt=""
-          className="hair mb-3 aspect-square w-full border object-cover"
+          className="photo hair mb-3 aspect-square w-full border object-cover"
+          style={
+            dot
+              ? ({ "--accent": statusColor(r.status) } as React.CSSProperties)
+              : undefined
+          }
         />
       )}
 
-      {r.text && <p className="whitespace-pre-wrap">{r.text}</p>}
-
       {/*
-        Druhy hlas. Hlasenie a odpoved su dvaja rozni hovoriaci, tak maju dva
-        bloky. Ked odpoved neprisla, blok to povie nahlas - prazdne miesto je
-        tu ta najdolezitejsia informacia.
+        Bodka visi v lavom stlpci pred textom, nie inline - inak by druhy riadok
+        textu zacal inde ako prvy. Stav tak hovori "tato vec je v stave X",
+        nie "operator povedal X", a na nastenke z toho vznikne jeden citatelny
+        stlpec bodiek po lavej hrane textov.
       */}
-      {!oznam && (
-        /*
-          Linka je zapustena zlava a bodka visi vedla nej. Keby siahala cez celu
-          sirku, citala by sa rovnako ako linka medzi kartami a odpoved by
-          vyzerala ako dalsie hlasenie, nie ako reakcia na to nad nou.
-        */
-        <div className="hair relative ml-[17px] flex gap-2 border-t pt-3">
-          <span className="absolute left-[-17px] top-[calc(0.75rem+5px)]">
-            <StatusDot status={r.status} />
-          </span>
-
-          {r.status === "nahlasene" ? (
-            <p className="text-dim">zatiaľ bez odpovede</p>
-          ) : (
-            <>
-              <div className="min-w-0 flex-1">
-                <p>
-                  <span className="text-dim">operátor · </span>
-                  {statusLabel(r.status)}
-                </p>
-                {r.status_note && <p className="text-dim">{r.status_note}</p>}
-              </div>
-              <span className="shrink-0 text-dim">{ageLabel(r.updated_at)}</span>
-            </>
+      {r.text && (
+        <div className="relative pl-6">
+          {dot && (
+            <span className="absolute left-0 top-0 flex h-[1.5em] w-6 items-center justify-center">
+              <StatusDot status={r.status} />
+            </span>
           )}
+          <p className="whitespace-pre-wrap">{r.text}</p>
         </div>
       )}
 
-      {/* Paticka patri tomu, kto sa pozera - nie ani jednemu z dvoch hlasov. */}
-      <footer className="mt-3 flex items-center gap-4 text-dim">
+      {/* Paticka patri hlaseniu, tak stoji pod nim - nie pod odpovedou. */}
+      <footer className="mt-4 flex items-center gap-4 text-dim">
         {operator && (
           <button onClick={remove} className="active:opacity-60">
             zmazať
@@ -196,6 +191,48 @@ export default function ReportCard({
         <p className="mt-2" style={{ color: "var(--s-nahlasene)" }}>
           {err}
         </p>
+      )}
+
+      {/*
+        Druhy hlas. Hlasenie a odpoved su dvaja rozni hovoriaci, tak maju dva
+        bloky. Ked odpoved neprisla, blok to povie nahlas - prazdne miesto je
+        tu ta najdolezitejsia informacia.
+      */}
+      {!oznam && (
+        /*
+          Linka je zapustena zlava a ikona operatora visi na jej lavom konci.
+          Keby siahala cez celu sirku, citala by sa rovnako ako linka medzi
+          kartami a odpoved by vyzerala ako dalsie hlasenie, nie ako reakcia
+          na to nad nou.
+        */
+        <div className="hair mt-7 ml-6 flex border-t pt-3">
+          {/*
+            Operator je neutralny. Ikona nikdy nedostane farbu stavu a animuje
+            sa len na hover - inak by sutazila s bodkou o pozornost.
+          */}
+          <span
+            title="operátor"
+            className="-ml-6 flex h-[1.5em] w-6 shrink-0 items-center justify-center text-dim"
+            style={{ opacity: r.status === "nahlasene" ? 0.45 : 1 }}
+          >
+            <CigaretteIcon size={14} aria-hidden />
+            <span className="sr-only">operátor</span>
+          </span>
+
+          {r.status === "nahlasene" ? (
+            <p className="text-dim">zatiaľ bez odpovede</p>
+          ) : (
+            <>
+              <div className="min-w-0 flex-1">
+                <p>{statusLabel(r.status)}</p>
+                {r.status_note && <p className="text-dim">{r.status_note}</p>}
+              </div>
+              <span className="shrink-0 pl-2 text-dim">
+                {ageLabel(r.updated_at)}
+              </span>
+            </>
+          )}
+        </div>
       )}
     </article>
   );

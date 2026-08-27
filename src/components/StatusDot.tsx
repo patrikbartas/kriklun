@@ -8,6 +8,11 @@ const COLOR: Record<Status, string> = {
   hotove: "var(--s-hotove)",
 };
 
+// Farbu stavu potrebuje aj ramik fotky, tak zije mimo komponenty.
+export function statusColor(status: Status) {
+  return COLOR[status];
+}
+
 // "vidime to" je prstenec, "riesi sa" je plny.
 // Rovnaka farba, iny stav vyplne. Tak zostane paleta mala.
 export default function StatusDot({ status }: { status: Status }) {
