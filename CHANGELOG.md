@@ -3,6 +3,29 @@
 Formát: `Added`, `Changed`, `Fixed`, `Notes`.
 Prehľad zámeru je v `README.md`.
 
+## [0.2.0] — 2026-08-27
+
+### Added
+- Zvonček: pri každom probléme sa dá prihlásiť na mailovú notifikáciu o zmene
+  stavu. Mail sa napíše raz a zapamätá si ho prehliadač, žiadny účet.
+  Odhlásenie je odkaz priamo v správe.
+- Nepovinné mailové pole vo formulári — kto ho vyplní, sleduje svoje hlásenie
+  automaticky.
+- Tabuľka `watchers` a migrácia `supabase-002-watchers.sql`.
+- `/info`: sekcia o zvončeku, odkazy na mail a na repozitár.
+
+### Changed
+- Odosielanie mailov prepísané z Resendu na SMTP (`nodemailer`), aby sa dala
+  použiť vlastná schránka na doméne. Port 465 aj 587.
+- Aplikácia má vlastný repozitár oddelený od projektových dokumentov.
+  V repozitári nie sú žiadne osobné údaje — hlásenia, fotky a mailové adresy
+  žijú v databáze.
+- README prepísaný tak, aby stál samostatne.
+
+### Fixed
+- Zlyhanie notifikácie zhodilo celú zmenu stavu. Notifikácie sú teraz zabalené
+  tak, že výpadok mailu nezablokuje zápis hlásenia ani zmenu stavu.
+
 ## [0.1.3] — 2026-08-27
 
 ### Added
