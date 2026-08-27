@@ -3,6 +3,11 @@
 /*
   Kriklun. Cierna a biela podla modu systemu.
   Farba existuje jedine na oznacenie stavu. Nikde inde.
+
+  Cervena - oranzova - zelena je jedna os: nikto sa na to nepozrel, uz sa to
+  hybe, hotovo. "Teraz to nejde" na tej osi nelezi - vec je stale pokazena, len
+  sa odlozila - tak ma vlastny odtien mimo nu. Seda to nezvladla, splyvala
+  s --dim a odlozene hlasenie v stlpci bodiek zmizlo.
 */
 
 :root {
@@ -15,7 +20,7 @@
   --s-nahlasene: #e5484d;
   --s-vidime: #f0a020;
   --s-riesi: #f0a020;
-  --s-nejde: #8a8a8a;
+  --s-nejde: #6e56cf;
   --s-hotove: #2fa36b;
 }
 
@@ -30,7 +35,7 @@
     --s-nahlasene: #ff6369;
     --s-vidime: #ffb224;
     --s-riesi: #ffb224;
-    --s-nejde: #8a8a8a;
+    --s-nejde: #8b78e6;
     --s-hotove: #3dd68c;
   }
 }

@@ -5,6 +5,27 @@ Prehľad zámeru je v `README.md`.
 
 Beží na `https://kriklun.com`.
 
+## [0.2.6] — 2026-08-27
+
+Odkedy bodka stavu stojí pri texte a tvorí na nástenke stĺpec, dá sa nástenka
+skenovať očami bez čítania. `Teraz to nejde` v tom stĺpci mizlo — bolo šedé,
+čiže presne `--dim`, farba odmlčaného textu.
+
+### Changed
+- `teraz to nejde` je fialové: `#6e56cf` v svetlom, `#8b78e6` v tmavom režime.
+  Červená – oranžová – zelená je jedna os: nikto sa na to nepozrel, už sa to
+  hýbe, hotovo. `Teraz to nejde` na tej osi neleží — vec je stále pokazená, len
+  sa odložila — tak má vlastný odtieň mimo nej.
+
+### Notes
+- Modrá bola druhý kandidát a vypadla z dvoch dôvodov. Svieti viac než červená
+  (kontrast 7.52 : 7.24 na čiernej), takže odložené hlásenie by kričalo hlasnejšie
+  než to, na ktoré sa ešte nikto nepozrel. A modrá v rozhraní znamená „informácia"
+  — čo tento stav podceňuje. Nie je to poznámka, vec je stále pokazená.
+- Fialová sedí aj pri farbosleposti: pri deuteranopii a protanopii, ktoré sú
+  zďaleka najčastejšie, sa červená so zelenou zbiehajú, ale fialová ostáva
+  oddelená od oboch.
+
 ## [0.2.5] — 2026-08-27
 
 Fronta bola jednosmerná. Keď operátor kartu raz odpovedal, zmizla mu z očí —
