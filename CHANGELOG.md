@@ -5,6 +5,18 @@ Prehľad zámeru je v `README.md`.
 
 Beží na `https://kriklun.com`.
 
+## [0.2.7] — 2026-08-27
+
+`www.kriklun.com` končilo na varovaní prehliadača. DNS síce ukazovalo na Vercel,
+ale certifikát bol vystavený len na apex, lebo `www` nebolo pridané v projekte.
+Odkaz s `www` by teda posadil suseda na červenú stránku „Vaše pripojenie nie je
+súkromné" — a to pri nástroji, kde je prvý dojem celá adopcia.
+
+### Fixed
+- `www` je pridané v projekte na Verceli, takže má certifikát.
+- `www` presmerúva na apex (308). Jedna appka, jedna adresa. Pravidlo je
+  napísané bez mena domény, nech platí aj keby sa raz zmenila.
+
 ## [0.2.6] — 2026-08-27
 
 Odkedy bodka stavu stojí pri texte a tvorí na nástenke stĺpec, dá sa nástenka
