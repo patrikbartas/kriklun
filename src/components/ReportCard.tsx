@@ -144,13 +144,20 @@ export default function ReportCard({
           </button>
         )}
 
+        {/*
+          Pred klikom je to veta, ktorou sa clovek pridava. Po klike uz je v tom
+          cisle zaratany, tak cislo znamena "a este tolkoto dalsich" - preto
+          count - 1, nie count.
+        */}
         <button
           onClick={plus}
           disabled={plused}
-          className="ml-auto active:opacity-60"
+          className="ml-auto shrink-0 active:opacity-60"
           style={{ color: plused ? "var(--fg)" : "var(--dim)" }}
         >
-          {plused ? "✓ " : ""}aj mňa{count > 0 ? ` · ${count}` : ""}
+          {plused
+            ? `✓ aj mňa${count > 1 ? ` + ${count - 1}` : ""}`
+            : `aj mňa to trápi${count > 0 ? ` · ${count}` : ""}`}
         </button>
 
         {!oznam && (

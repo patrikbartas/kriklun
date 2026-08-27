@@ -5,6 +5,33 @@ Prehľad zámeru je v `README.md`.
 
 Beží na `https://kriklun.com`.
 
+## [0.2.5] — 2026-08-27
+
+Fronta bola jednosmerná. Keď operátor kartu raz odpovedal, zmizla mu z očí —
+aj keď sa `teraz to nejde` medzitým stalo `hotové`. Odpoveď sa dá zmýliť a
+svet sa medzitým zmení, tak musí existovať cesta späť.
+
+### Fixed
+- Operátor sa vie prepnúť medzi `fronta` a `všetko`. `fronta` ostáva úzka a
+  nemenná: čo dostalo odpoveď, sa do nej nevracia. `všetko` ukáže všetky
+  hlásenia vrátane odpovedaných, takže sa stav dá zmeniť aj dodatočne.
+  Serveru to vadilo nikdy — blokoval to len filter na klientovi.
+- V režime `všetko` sa radí podľa dátumu nahlásenia, nie podľa stavu. Keby sa
+  radilo podľa stavu, karta by po zmene odskočila inam a operátor by sa zrazu
+  pozeral na cudziu vec.
+- Operátor vidí pri karte dôvod, ktorý na ňu sám napísal. Bez toho by v režime
+  `všetko` prepisoval vlastnú odpoveď naslepo.
+- Rozpísaná poznámka sa už neprenáša na ďalšiu kartu. Patrí hláseniu, nie
+  obrazovke — inak sa dôvod priradil k cudziemu problému.
+
+### Changed
+- `← späť` a `preskočiť →` sú `← predchádzajúce` a `nasledujúce →`. `späť`
+  vyzeralo ako návrat z obrazovky a `preskočiť` ako rozhodnutie kartu obísť,
+  hoci oboje je len listovanie.
+- `aj mňa` je `aj mňa to trápi` — veta, ktorou sa človek pridáva, nie štítok.
+  Po kliknutí sa zmení na `✓ aj mňa + 4`: v tom čísle už je klikajúci
+  započítaný, tak číslo znamená „a ešte toľkoto ďalších".
+
 ## [0.2.4] — 2026-08-27
 
 Karta mala od 0.2.3 dva hlasy, ale pätička s `aj mňa` a zvončekom stála pod

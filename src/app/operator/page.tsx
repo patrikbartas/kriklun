@@ -24,6 +24,9 @@ export default function Operator() {
   const [asking, setAsking] = useState<Status | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // Fronta je uzka zamerne. Ale odpoved sa da zmylit a "teraz to nejde" sa raz
+  // stane "hotove", tak musi existovat cesta spat k uz odpovedanej karte.
+  const [vsetko, setVsetko] = useState(false);
 
   useEffect(() => {
     const p = getPin();
@@ -34,16 +37,33 @@ export default function Operator() {
   }, []);
 
   // Najstarsie neodpovedane hore. Kto caka najdlhsie, ide prvy.
+  //
+  // V rezime "vsetko" sa radi podla datumu nahlasenia, nie podla stavu. Keby
+  // sa radilo podla stavu, karta by po zmene odskocila inam a operator by sa
+  // zrazu pozeral na cudziu vec.
   const queue = useMemo(() => {
-    return (rows ?? [])
-      .filter((r) => r.kind === "problem" && QUEUE_STATUSES.includes(r.status))
+    const all = (rows ?? []).filter((r) => r.kind === "problem");
+    if (vsetko) {
+      return all.sort((a, b) => b.created_at.localeCompare(a.created_at));
+    }
+    return all
+      .filter((r) => QUEUE_STATUSES.includes(r.status))
       .sort((a, b) => {
         const un = (r: Report) => (r.status === "nahlasene" ? 0 : 1);
         return un(a) - un(b) || a.created_at.localeCompare(b.created_at);
       });
-  }, [rows]);
+  }, [rows, vsetko]);
 
   const card = queue[i];
+
+  // Poznamka patri karte, nie obrazovke. Bez tohto by sa rozpisany dovod
+  // preniesol na dalsiu kartu a priradil sa k cudziemu hlaseniu.
+  function go(n: number) {
+    setI(n);
+    setNote("");
+    setAsking(null);
+    setErr(null);
+  }
 
   async function act(status: Status) {
     if (!card) return;
@@ -93,8 +113,29 @@ export default function Operator() {
 
   return (
     <>
-      <div className="flex items-start">
-        <Wordmark suffix="OPERÁTOR" />
+      <Wordmark suffix="OPERÁTOR" />
+
+      <div className="mb-4 flex items-center gap-4">
+        {[false, true].map((v) => (
+          <button
+            key={String(v)}
+            onClick={() => {
+              setVsetko(v);
+              go(0);
+            }}
+            style={{ color: vsetko === v ? "var(--fg)" : "var(--dim)" }}
+          >
+            <span
+              style={{
+                borderBottom:
+                  vsetko === v ? "1px solid var(--fg)" : "1px solid transparent",
+                paddingBottom: 2,
+              }}
+            >
+              {v ? "všetko" : "fronta"}
+            </span>
+          </button>
+        ))}
         <span className="ml-auto text-dim">
           {queue.length ? `${i + 1}/${queue.length}` : "0"}
         </span>
@@ -102,7 +143,9 @@ export default function Operator() {
 
       {!card && (
         <p className="hair border-t py-6 text-dim">
-          fronta je prázdna. všetko odpovedané.
+          {vsetko
+            ? "zatiaľ nič nie je nahlásené."
+            : "fronta je prázdna. všetko odpovedané."}
         </p>
       )}
 
@@ -128,6 +171,15 @@ export default function Operator() {
           )}
 
           {card.text && <p className="mb-5 whitespace-pre-wrap">{card.text}</p>}
+
+          {/*
+            V rezime "vsetko" sa operator pozera na uz odpovedanu kartu. Bez
+            tohto by nevidel dovod, ktory sam napisal, a prepisoval by vlastnu
+            odpoved naslepo.
+          */}
+          {card.status_note && (
+            <p className="mb-5 text-dim">{card.status_note}</p>
+          )}
 
           {asking && (
             <input
@@ -162,12 +214,14 @@ export default function Operator() {
           </div>
 
           <div className="mt-4 flex text-dim">
-            <button onClick={() => setI((n) => Math.max(0, n - 1))}>← späť</button>
+            <button onClick={() => go(Math.max(0, i - 1))}>
+              ← predchádzajúce
+            </button>
             <button
               className="ml-auto"
-              onClick={() => setI((n) => Math.min(queue.length - 1, n + 1))}
+              onClick={() => go(Math.min(queue.length - 1, i + 1))}
             >
-              preskočiť →
+              nasledujúce →
             </button>
           </div>
         </>
