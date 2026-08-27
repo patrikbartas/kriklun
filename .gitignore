@@ -1,0 +1,17 @@
+node_modules/
+
+.next/
+out/
+next-env.d.ts
+
+# lokalny fallback store
+.data/
+
+# tajomstva
+.env
+.env.local
+.env*.local
+
+.vercel/
+
+.DS_Store
