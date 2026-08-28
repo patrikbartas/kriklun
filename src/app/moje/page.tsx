@@ -18,10 +18,7 @@ export default function Moje() {
 
   return (
     <>
-      <Wordmark />
-      <p className="mb-4 text-dim">
-        {me ? `denníček — ${me}` : "denníček"}
-      </p>
+      <Wordmark sub={me ? `denníček — ${me}` : "denníček"} />
 
       {me === "" && (
         <p className="hair border-t py-6 text-dim">

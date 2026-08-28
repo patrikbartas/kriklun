@@ -3,7 +3,6 @@
 import { useState } from "react";
 import StatusDot, { statusColor } from "./StatusDot";
 import { BellIcon } from "@/components/ui/bell";
-import { CigaretteIcon } from "@/components/ui/cigarette";
 import { ageLabel } from "@/lib/time";
 import { statusLabel, type Report } from "@/lib/types";
 import {
@@ -201,43 +200,42 @@ export default function ReportCard({
       )}
 
       {/*
-        Druhy hlas. Hlasenie a odpoved su dvaja rozni hovoriaci, tak maju dva
-        bloky. Ked odpoved neprisla, blok to povie nahlas - prazdne miesto je
-        tu ta najdolezitejsia informacia.
+        Druhy hlas. Hlasenie a odpoved su dvaja rozni hovoriaci - ale nie dve
+        polozky. Preto uz odpoved nema vlastnu vodorovnu linku: mala rovnaku
+        hrubku aj smer ako linka medzi kartami, tak sa citala ako zaciatok
+        dalsieho hlasenia. Vodorovna linka tu odteraz znamena jedine "tu
+        zacina nova karta".
+
+        Namiesto nej je konektor. Visi na lavej hrane karty, kde uz stoji
+        vsetko sluzobne - hlavicka aj paticka - a text odpovede zacina v tom
+        istom stlpci ako text hlasenia. Rec pod recou, sluzobne veci vedla.
       */}
       {!oznam && (
-        /*
-          Linka je zapustena zlava a ikona operatora visi na jej lavom konci.
-          Keby siahala cez celu sirku, citala by sa rovnako ako linka medzi
-          kartami a odpoved by vyzerala ako dalsie hlasenie, nie ako reakcia
-          na to nad nou.
-        */
-        <div className="hair mt-7 ml-6 flex border-t pt-3">
-          {/*
-            Operator je neutralny. Ikona nikdy nedostane farbu stavu a animuje
-            sa len na hover - inak by sutazila s bodkou o pozornost.
-          */}
-          <span
-            title="operátor"
-            className="-ml-6 flex h-[1.5em] w-6 shrink-0 items-center justify-center text-dim"
-            style={{ opacity: r.status === "nahlasene" ? 0.45 : 1 }}
-          >
-            <CigaretteIcon size={14} aria-hidden />
-            <span className="sr-only">operátor</span>
+        <div className="relative mt-3 pl-6">
+          <span aria-hidden className="absolute left-0 top-0 text-dim">
+            └─
           </span>
 
           {r.status === "nahlasene" ? (
+            /* Prazdne miesto je tu ta najdolezitejsia informacia. */
             <p className="text-dim">zatiaľ bez odpovede</p>
           ) : (
-            <>
-              <div className="min-w-0 flex-1">
-                <p>{statusLabel(r.status)}</p>
-                {r.status_note && <p className="text-dim">{r.status_note}</p>}
-              </div>
-              <span className="shrink-0 pl-2 text-dim">
-                {ageLabel(r.updated_at)}
-              </span>
-            </>
+            /*
+              Jedna veta, jedno pismo, jedna farba. Stav a dovod su ta ista
+              vypoved - "teraz to nejde" bez toho, preco, nie je odpoved.
+              Rozdelit ich na dva riadky a dovod stlmit do sedej znamenalo
+              povedat, ze je vedlajsi. Je hlavny.
+
+              Cas ide na koniec vety, nie doprava. Vpravo zarovnany cas mal
+              rovnaky tvar ako cas v hlavicke karty, a prave to davalo
+              odpovedi siluetu novej polozky.
+            */
+            <p>
+              <span className="text-dim">operátor: </span>
+              {statusLabel(r.status)}.
+              {r.status_note ? ` ${r.status_note}` : ""}
+              <span className="text-dim"> · {ageLabel(r.updated_at)}</span>
+            </p>
           )}
         </div>
       )}

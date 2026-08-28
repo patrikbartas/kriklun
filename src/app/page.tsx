@@ -28,7 +28,7 @@ export default function Nastenka() {
 
   return (
     <>
-      <Wordmark claim />
+      <Wordmark sub="Krič sem, nie na stenu." />
 
       <div className="mb-4 flex items-center gap-4">
         {(["vsetko", "problem", "oznam"] as Filter[]).map((f) => (

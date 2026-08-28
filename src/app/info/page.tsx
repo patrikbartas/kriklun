@@ -31,11 +31,9 @@ function Dot({ c, hollow }: { c: string; hollow?: boolean }) {
 export default function Info() {
   return (
     <>
-      <Wordmark />
+      <Wordmark sub="Miesto, kde napíšeš, že je niečo pokazené — a niekto ti na to odpovie." />
 
       <div className="space-y-6">
-        <p>Miesto, kde napíšeš, že je niečo pokazené — a niekto ti na to odpovie.</p>
-
         <section>
           <p className="text-dim">prečo</p>
           <p className="mt-1">

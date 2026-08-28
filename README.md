@@ -27,11 +27,15 @@ Preto má stav `teraz to nejde` povinný dôvod. „Vieme o tom, náhradný diel
 o tri týždne“ je plnohodnotná odpoveď.
 
 Karta je preto postavená ako dialóg dvoch ľudí, nie ako záznam. Hore je hlásenie
-podpísané tým, kto ho napísal, pod ním za zapustenou linkou odpoveď podpísaná
-operátorom. Keď odpoveď ešte neprišla, blok to povie nahlas — `zatiaľ bez
-odpovede` je na tejto karte tá najdôležitejšia informácia. Dva bloky sú zároveň
-strop: vo chvíli, keď pod fotkou pribudne piata replika, je z toho Facebook,
-čiže presne to, čo Kriklún nahrádza.
+podpísané tým, kto ho napísal, pod ním na konektore `└─` odpoveď podpísaná
+`operátor:` — stav a dôvod ako jedna veta, jedným písmom, jednou farbou. Keď
+odpoveď ešte neprišla, blok to povie nahlas — `zatiaľ bez odpovede` je na tejto
+karte tá najdôležitejšia informácia. Dva bloky sú zároveň strop: vo chvíli, keď
+pod fotkou pribudne piata replika, je z toho Facebook, čiže presne to, čo
+Kriklún nahrádza.
+
+Vodorovná linka znamená v celej appke jedinú vec: tu začína nová karta. Preto ju
+odpoveď nemá — je reakciou na to nad ňou, nie ďalšou položkou.
 
 ## Obrazovky
 

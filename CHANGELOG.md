@@ -5,6 +5,39 @@ Prehľad zámeru je v `README.md`.
 
 Beží na `https://kriklun.com`.
 
+## [0.2.9] — 2026-08-28
+
+Odpoved operatora sa zlievala s hlasenim pod nou. Nebolo to tym, ze by bola
+prislabo oznacena — bolo to tym, ze mala presne tvar zaciatku novej karty:
+vodorovna vlasova linka nad sebou, mala ikona vlavo, cas zarovnany doprava.
+Tri signaly, ktore v tejto appke znamenaju „tu zacina nova polozka", pouzite
+na veci, ktora je reakciou na tu predchadzajucu.
+
+### Changed
+- Odpoved uz nema vlastnu vodorovnu linku. Vodorovna linka odteraz znamena
+  v celej appke jedinu vec: tu zacina nova karta.
+- Namiesto nej je konektor `└─`. Visi na lavej hrane karty, kde uz stoji
+  vsetko sluzobne — hlavicka aj paticka — a text odpovede zacina v tom istom
+  stlpci ako text hlasenia. Rec pod recou, sluzobne veci vedla.
+- Ikonu cigarety nahradil podpis `operátor:`. Ikona bola hadanka; slovo nie.
+- Stav a dovod su jedna veta, jedno pismo, jedna farba: `operátor: teraz to
+  nejde. Náhradný diel príde o tri týždne.` Predtym bol stav plnou farbou na
+  prvom riadku a dovod sedy na druhom — co je tvrdenie, ze dovod je vedlajsi.
+  Pri stave `teraz to nejde` je dovod cela odpoved.
+- Cas ide na koniec vety, uz nie doprava. Prave ten vpravo zarovnany cas mal
+  rovnaky tvar ako cas v hlavicke karty.
+- Odstup nad odpovedou je z `28px` na `12px`. Predtym bola odpoved priblizne
+  rovnako daleko od hlasenia, na ktore odpoveda, ako od cudzej karty pod nou.
+- Riadok pod menom `KRIKLUN` zije v `Wordmark`, nie na kazdej stranke zvlast.
+  Claim na nastenke, `denníček — meno` v `moje`, veta o com to je v `info` —
+  vsetky odteraz sedia rovnako vysoko. Predtym bol claim `8px` pod logom
+  a ostatne `20px`.
+
+### Notes
+- `zatiaľ bez odpovede` ostava bez podpisu `operátor:`. Operator este
+  nepovedal nic, tak sa pod to nema kto podpisat.
+- `src/components/ui/cigarette.tsx` je zmazany, uz ho nema kto volat.
+
 ## [0.2.8] — 2026-08-28
 
 Dole stali tri rovnako hlasne odkazy vedla seba a nahlasenie — jediny dovod,

@@ -6,12 +6,17 @@ import { MePixel, WrenchPixel } from "@/components/ui/pixel";
   Kluc uz nie je easter egg vedla loga - stoji vpravo ako otvoreny odkaz na
   /info, vedla neho zajac na /moje. Dole ostava jedine tlacidlo, nahlasenie,
   tak sa ostatne cesty musia dat najst tu.
+
+  Pod menom je jeden riadok, ktory povie, kde stojis - claim na nastenke,
+  meno denniceka v moje, veta o com to je v info. Je to jedna a ta ista
+  linajka, tak zije tu a nie na kazdej stranke zvlast. Inak sedi na kazdej
+  stranke inak vysoko.
 */
 export default function Wordmark({
-  claim = false,
+  sub,
   suffix,
 }: {
-  claim?: boolean;
+  sub?: React.ReactNode;
   suffix?: string;
 }) {
   return (
@@ -31,7 +36,7 @@ export default function Wordmark({
           </Link>
         </div>
       </div>
-      {claim && <div className="mt-2 text-dim">Krič sem, nie na stenu.</div>}
+      {sub && <div className="mt-2 text-dim">{sub}</div>}
     </div>
   );
 }
