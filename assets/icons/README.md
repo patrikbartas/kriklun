@@ -11,3 +11,4 @@ bolo treba ikonu prekresliť alebo pridať ďalšiu.
 | `camera.svg` | tlačidlo `nahlásiť problém` dole     |
 | `wrench.svg` | odkaz na `/info` vpravo hore         |
 | `me.svg`     | odkaz na `/moje` vpravo hore         |
+| `kampus.svg` | odkaz na `/kampus` vpravo hore       |

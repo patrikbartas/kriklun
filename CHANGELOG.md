@@ -5,6 +5,42 @@ Prehľad zámeru je v `README.md`.
 
 Beží na `https://kriklun.com`.
 
+## [0.3.0] — 2026-08-28
+
+Kriklun pocuva na jedinej chodbe jednej budovy a nikde to nebolo vidiet. Kto
+pride prvykrat, netusi, ci je jeho poschodie vnutri alebo mimo. `/kampus` je
+odpoved: hmota oboch budov, v ktorej svieti jedine podlazie, na ktore sa dnes
+da hlasit. Nie je to ozdoba, je to odpoved na najcastejsiu prvu otazku.
+
+### Added
+- `/kampus` — model kampusa (three.js + react-three-fiber). Ortograficka
+  kamera, otacanie, zoom a posun aj na dotyk. Prepinac ma tri stavy: skola,
+  internat, kampus. Prepnutie preleti kamerou na uhol, ktory tomu stavu sedi:
+  na budovu nizsie, na cely kampus vyssie.
+- Default je skola, nie kampus. Cely kampus je 158 x 87 m pri vyske 20,5 —
+  to je placka. Samotna skola je 64 x 65 pri 20,5, zhruba 3:1, a cita sa
+  normalne. Navyse hlasenia su v nej.
+- Tretia ikona v hlavicke vedie na `/kampus`. Zajac zostal uplne vpravo — je
+  jediny z tych troch, na ktory clovek chodi opakovane, a pravy okraj je na
+  telefone najlepsie dosiahnutelny palcom.
+- `src/lib/kampus.ts` — geometria ako data, nie ako model. Budova nema casti,
+  ma podlazia, a podlazie je jeden obrys a jedna vyska. Ziadny .glb, ziadny
+  CAD, ziadny loader. Telocvicna nie je objekt navyse, je to dovod, preco je
+  obrys internatu po 1NP dlhsi.
+
+### Notes
+- Model je zhruba 233 kB gzip a nacita sa az na `/kampus` (`ssr: false`,
+  vlastny chunk). Cesta k nahlaseniu problemu o nom nevie.
+- Ziadna nova farba. Aktivne podlazie je plny atrament, zvysok bleda seda —
+  pravidlo z `globals.css` (farbu nesie jedine stav hlasenia) plati aj tu.
+  Az sa budu podlazia farbit podla poctu hlaseni, bude to sila toho isteho
+  atramentu, nie novy odtien.
+- Ziadne obrysove ciary a ziadne medzery medzi doskami. V pokoji je budova
+  jedna suvisla hmota; podlazie sa objavi az pod kurzorom a zase zmizne.
+- Interaktivna je zatial len skola. Internat a krcok sa daju obzriet, ale
+  nereaguju — nevedie k nim ziadna zona. Krcok sa ukaze len v pohlade
+  `kampus`: v pohlade na skolu by z nej trcal 23 metrov dlhy pahyl do prazdna.
+
 ## [0.2.10] — 2026-08-28
 
 Prvy ostry oznam („sme online!") dostal kliky na `aj mňa to trápi`. Ludia
