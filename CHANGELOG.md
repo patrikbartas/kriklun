@@ -5,6 +5,20 @@ Prehľad zámeru je v `README.md`.
 
 Beží na `https://kriklun.com`.
 
+## [0.3.1] — 2026-08-28
+
+### Changed
+- Model sa sam pomaly otaca, jedna otacka za zhruba dve minuty, zlava doprava.
+  Ma to povedat „da sa so mnou hybat", nie na seba upozornovat. Kym je kurzor
+  nad platnom, stoji: inak by sa podlazie odsuvalo prave vtedy, ked si ho
+  niekto cita. Kto ma v systeme vypnute animacie, ten otacanie nedostane.
+- `frameloop` zostava `demand`, takze ked model stoji, stranka nekresli vobec.
+  Otacanie si dalsi snimok pyta samo.
+
+### Notes
+- Zdrojove vykresy z `3d/` su prec. Vsetky kotu z nich su v `src/lib/kampus.ts`
+  a repozitar je verejny.
+
 ## [0.3.0] — 2026-08-28
 
 Kriklun pocuva na jedinej chodbe jednej budovy a nikde to nebolo vidiet. Kto

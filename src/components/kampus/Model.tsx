@@ -133,12 +133,17 @@ function Rig({
   const size = useThree((s) => s.size);
   const controls = useRef<OrbitControls | null>(null);
   const anim = useRef<Anim | null>(null);
+  // Model sa sam pomaly otaca, kym nan clovek nesiahne. Kym je kurzor nad
+  // platnom, stoji - inak by sa podlazie pod kurzorom odsuvalo prave vtedy,
+  // ked si ho niekto cita.
+  const spin = useRef(false);
   // Posledny zaramovany pohlad. null znamena, ze este ziadny neprebehol.
   const done = useRef<string | null>(null);
 
   useEffect(() => {
     const { camera, gl } = get();
-    const c = new OrbitControls(camera, gl.domElement);
+    const el = gl.domElement;
+    const c = new OrbitControls(camera, el);
     c.enableDamping = true;
     c.dampingFactor = 0.14;
     c.zoomSpeed = 0.8;
@@ -147,10 +152,39 @@ function Rig({
     // Pod teren nepustime. Model nema podlahu, zdola by to bola diera.
     c.minPolarAngle = 0.12;
     c.maxPolarAngle = Math.PI / 2 - 0.03;
+    // Jedna otacka za zhruba dve minuty, zlava doprava. Ma to pripominat, ze
+    // sa s tym da hybat, nie na seba upozornovat.
+    c.autoRotateSpeed = 0.5;
+
+    // Kto ma v systeme vypnute animacie, ten ich nedostane ani tu.
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const pause = () => {
+      spin.current = false;
+      c.autoRotate = false;
+    };
+    const resume = () => {
+      if (calm.matches) return;
+      spin.current = true;
+      c.autoRotate = true;
+      invalidate();
+    };
+
+    el.addEventListener("pointerenter", pause);
+    el.addEventListener("pointerleave", resume);
+    // pointerenter nepride, ak kurzor uz nad platnom stal, ked sa scena
+    // namountovala - prvy pohyb to dorovna.
+    el.addEventListener("pointermove", pause);
+    calm.addEventListener("change", () => (calm.matches ? pause() : resume()));
+
     const redraw = () => invalidate();
     c.addEventListener("change", redraw);
     controls.current = c;
+    resume();
+
     return () => {
+      el.removeEventListener("pointerenter", pause);
+      el.removeEventListener("pointerleave", resume);
+      el.removeEventListener("pointermove", pause);
       c.removeEventListener("change", redraw);
       c.dispose();
       controls.current = null;
@@ -224,6 +258,9 @@ function Rig({
     }
 
     c.update();
+    // frameloop je "demand", takze otacanie si musi dalsi snimok vypytat samo.
+    // Ked stoji, stranka nekresli vobec a nezerie bateriu.
+    if (spin.current) invalidate();
   });
 
   return null;
