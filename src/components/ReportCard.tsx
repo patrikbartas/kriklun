@@ -3,7 +3,7 @@
 import { useState } from "react";
 import StatusDot, { statusColor } from "./StatusDot";
 import { BellIcon } from "@/components/ui/bell";
-import { ageLabel } from "@/lib/time";
+import { ageLabel, untilLabel } from "@/lib/time";
 import { statusLabel, type Report } from "@/lib/types";
 import {
   hasPlused,
@@ -33,8 +33,10 @@ export default function ReportCard({
   // Tlacidlo vidi len ten, kto ma v prehliadaci pin. Pravo overuje az server.
   const [operator] = useState(() => Boolean(getPin()));
   const oznam = r.kind === "oznam";
-  // Oznam nema stav, tak nema ani bodku. Odsadenie textu si necha, nech ma
-  // nastenka jednu lavu hranu textu a nevyzera roztrhane.
+  // Oznam nema stav, tak nema ani bodku - a uz ani odsadenie. Odsadenie
+  // vyrabala bodka; prazdny stlpec po nej sa necital ako "iny druh zaznamu",
+  // ale ako bodka, ktora sa nenacitala. Rovna lava hrana textu bola kupena
+  // dierou. Oznam ma odteraz vlastny tvar, nie tvar hlasenia bez casti.
   const dot = !oznam;
   // Bodka patri k textu hlasenia. Ked text nie je (hola fotka), nema kde visiet,
   // tak sa vrati do hlavicky.
@@ -94,15 +96,20 @@ export default function ReportCard({
 
   return (
     <article className="hair border-t py-4">
-      {/* Kto to nahlasil, patri nad text, nie pod odpoved operatora. */}
-      <header className="mb-2 flex items-center gap-2 text-dim">
-        {dotInHeader && <StatusDot status={r.status} />}
-        <span className="min-w-0 truncate">
-          {oznam ? "oznam · " : ""}
-          {r.author} · {r.zone}
-        </span>
-        <span className="ml-auto shrink-0">{ageLabel(r.created_at)}</span>
-      </header>
+      {/*
+        Kto to nahlasil, patri nad text, nie pod odpoved operatora. Na hlaseni
+        je hlavicka navigacia: co je pokazene a kde, este predtym, nez zacnes
+        citat. Oznam ju nema - tam je obsahom sama veta.
+      */}
+      {!oznam && (
+        <header className="mb-2 flex items-center gap-2 text-dim">
+          {dotInHeader && <StatusDot status={r.status} />}
+          <span className="min-w-0 truncate">
+            {r.author} · {r.zone}
+          </span>
+          <span className="ml-auto shrink-0">{ageLabel(r.created_at)}</span>
+        </header>
+      )}
 
       {r.photo_url && (
         /* eslint-disable-next-line @next/next/no-img-element */
@@ -124,53 +131,84 @@ export default function ReportCard({
         nie "operator povedal X", a na nastenke z toho vznikne jeden citatelny
         stlpec bodiek po lavej hrane textov.
       */}
-      {r.text && (
-        <div className="relative pl-6">
-          {dot && (
+      {r.text &&
+        (oznam ? (
+          <p className="whitespace-pre-wrap">{r.text}</p>
+        ) : (
+          <div className="relative pl-6">
             <span className="absolute left-0 top-0 flex h-[1.5em] w-6 items-center justify-center">
               <StatusDot status={r.status} />
             </span>
-          )}
-          <p className="whitespace-pre-wrap">{r.text}</p>
-        </div>
+            <p className="whitespace-pre-wrap">{r.text}</p>
+          </div>
+        ))}
+
+      {/*
+        Podpis oznamu ide pod rec, nie nad nu. Sloveso robi to, co predtym
+        stitok "oznam · " pred menom - povie, ze toto nie je pokazena vec -
+        len bez toho, aby druh zaznamu stal pred tym, kto hovori.
+
+        Vpravo zarovnany cas je znak hlasenia: hovori, ako dlho sa nan nikto
+        nepozrel. Oznam nikto neriesi, tak sa tu nema co zanedbat; namiesto
+        veku stoji vo vete platnost, ked ju oznam ma.
+      */}
+      {oznam && (
+        <p className="mt-2 text-dim">
+          {r.author} oznamuje · {r.zone} ·{" "}
+          {r.expires_at ? untilLabel(r.expires_at) : ageLabel(r.created_at)}
+        </p>
       )}
 
-      {/* Paticka patri hlaseniu, tak stoji pod nim - nie pod odpovedou. */}
-      <footer className="mt-4 flex items-center gap-4 text-dim">
-        {operator && (
-          <button onClick={remove} className="active:opacity-60">
-            zmazať
-          </button>
-        )}
+      {/*
+        Paticka patri hlaseniu, tak stoji pod nim - nie pod odpovedou. Na
+        ozname nie je co robit, tak tam nie je vobec; ostane len operatorske
+        mazanie.
+      */}
+      {(!oznam || operator) && (
+        <footer className="mt-4 flex items-center gap-4 text-dim">
+          {operator && (
+            <button onClick={remove} className="active:opacity-60">
+              zmazať
+            </button>
+          )}
 
-        {/*
-          Pred klikom je to veta, ktorou sa clovek pridava. Po klike uz je v tom
-          cisle zaratany, tak cislo znamena "a este tolkoto dalsich" - preto
-          count - 1, nie count.
-        */}
-        <button
-          onClick={plus}
-          disabled={plused}
-          className="ml-auto shrink-0 active:opacity-60"
-          style={{ color: plused ? "var(--fg)" : "var(--dim)" }}
-        >
-          {plused
-            ? `✓ aj mňa${count > 1 ? ` + ${count - 1}` : ""}`
-            : `aj mňa to trápi${count > 0 ? ` · ${count}` : ""}`}
-        </button>
+          {/*
+            Pred klikom je to veta, ktorou sa clovek pridava. Po klike uz je
+            v tom cisle zaratany, tak cislo znamena "a este tolkoto dalsich" -
+            preto count - 1, nie count.
 
-        {!oznam && (
-          <button
-            onClick={bell}
-            aria-label={watching ? "sleduješ" : "sledovať zmeny"}
-            title={watching ? "sleduješ" : "dať vedieť, keď sa zmení stav"}
-            className="shrink-0 active:opacity-60"
-            style={{ color: watching ? "var(--fg)" : "var(--dim)" }}
-          >
-            <BellIcon size={16} />
-          </button>
-        )}
-      </footer>
+            Na ozname tlacidlo nie je. To cislo nie je hlas, je to poradie vo
+            fronte: hovori operatorovi, ktora pokazena vec pali poschodie
+            najviac. Oznamy sa do operatorskej fronty nikdy nedostanu, takze
+            na nich ho nema kto precitat - a cislo, ktore nikto necita, uz
+            nie je signal, ale pacik.
+          */}
+          {!oznam && (
+            <button
+              onClick={plus}
+              disabled={plused}
+              className="ml-auto shrink-0 active:opacity-60"
+              style={{ color: plused ? "var(--fg)" : "var(--dim)" }}
+            >
+              {plused
+                ? `✓ aj mňa${count > 1 ? ` + ${count - 1}` : ""}`
+                : `aj mňa to trápi${count > 0 ? ` · ${count}` : ""}`}
+            </button>
+          )}
+
+          {!oznam && (
+            <button
+              onClick={bell}
+              aria-label={watching ? "sleduješ" : "sledovať zmeny"}
+              title={watching ? "sleduješ" : "dať vedieť, keď sa zmení stav"}
+              className="shrink-0 active:opacity-60"
+              style={{ color: watching ? "var(--fg)" : "var(--dim)" }}
+            >
+              <BellIcon size={16} />
+            </button>
+          )}
+        </footer>
+      )}
 
       {asking && (
         <div className="mt-3">

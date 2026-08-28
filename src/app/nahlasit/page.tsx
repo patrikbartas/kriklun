@@ -55,7 +55,13 @@ export default function Nahlasit() {
         author: me.trim(),
         photoDataUrl: photo,
         email: mail.trim() || null,
-        expiresAt: kind === "oznam" && until ? new Date(until).toISOString() : null,
+        // "platí do 30. 8." znamena vratane 30. 8. Holy datum sa parsuje ako
+        // polnoc v UTC, takze oznam by zmizol na zaciatku toho dna, nie na
+        // konci - a karta by az do jeho zmiznutia tvrdila, ze este plati.
+        expiresAt:
+          kind === "oznam" && until
+            ? new Date(`${until}T23:59:59`).toISOString()
+            : null,
       }),
     });
 

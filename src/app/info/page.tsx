@@ -75,6 +75,10 @@ export default function Info() {
             Nie je to páčik. Je to informácia o tom, čo poschodie páli najviac,
             aby sa vedelo, čo riešiť skôr.
           </p>
+          <p className="mt-2">
+            Preto to na oznamoch nenájdeš. Oznam nikto nerieši, tak by tam
+            z toho čísla páčik bol.
+          </p>
         </section>
 
         <section>

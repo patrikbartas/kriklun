@@ -5,6 +5,54 @@ Prehľad zámeru je v `README.md`.
 
 Beží na `https://kriklun.com`.
 
+## [0.2.10] — 2026-08-28
+
+Prvy ostry oznam („sme online!") dostal kliky na `aj mňa to trápi`. Ludia
+nemali co ine stlacit, tak stlacili to, co tam bolo — a povedali tym vetu,
+ktora na oznam nesadne. Chyba nebola v nich. Karta oznamu bola dovtedy karta
+hlasenia, z ktorej sa odobrali casti: bez bodky, bez zvonceka, bez odpovede —
+ale s odsadenim po chybajucej bodke a so stitkom `oznam · ` pred menom, ktory
+mal to chybanie vysvetlit. Oznam ma odteraz vlastny tvar, nie tvar hlasenia
+bez casti.
+
+### Changed
+- `aj mňa to trápi` na ozname uz nie je. To cislo nikdy nebolo hlas, bolo to
+  poradie vo fronte: hovori operatorovi, ktora pokazena vec pali poschodie
+  najviac. Oznamy sa do operatorskej fronty nedostanu — filtruje ich hned
+  prvy riadok `/operator` — takze na ozname to cislo nema kto precitat.
+  Cislo, ktore nikto necita, uz nie je signal, ale pacik. Z rovnakeho dovodu
+  tam nie je zvoncek: nie je co sledovat, ked nie je stav.
+- Stitok `oznam · ` pred menom autora je prec. Bodkovy retazec v hlavicke je
+  zoznam rovnocennych faktov o veci (`kto · kde`); druh zaznamu medzi ne
+  nepatri a stal tam prvy — pred tym, kto hovori.
+- Podpis oznamu ide pod rec, nie nad nu: `patrik oznamuje · chodba 2NP ·
+  platí do 30. 8.` Na hlaseni je hlavicka navigacia — co je pokazene a kde,
+  este nez zacnes citat. Oznam nikto neriesi, tak je jeho obsahom sama veta
+  a podpis je poznamka pod nou. Sloveso `oznamuje` robi to, co robil stitok,
+  len bez stitku.
+- Namiesto veku stoji v podpise platnost, ked ju oznam ma. Vpravo zarovnany
+  cas na hlaseni znamena „tolkoto sa nan nikto nepozrel" — na ozname sa nema
+  co zanedbat. Hlasenie starne, oznam odpocitava. Bez datumu ostava vek.
+- Text oznamu uz nie je odsadeny. Odsadenie vyrabala bodka stavu a od 0.2.4
+  sme ho drzali kvoli jednej lavej hrane textu na nastenke; lenze prazdny
+  stlpec po bodke sa necital ako iny druh zaznamu, ale ako bodka, ktora sa
+  nenacitala. Rovna hrana bola kupena dierou. Oznam odteraz zo stlpca bodiek
+  vystupuje zamerne — a prave to je ten signal.
+- Paticka sa na ozname nevykresluje vobec, uz nie je prazdna. Operatorovi
+  v nej ostava `zmazať`.
+
+### Fixed
+- `platí do 30. 8.` teraz naozaj znamena vratane 30. 8. Holy datum z pola sa
+  parsoval ako polnoc v UTC, takze oznam mizol na zaciatku toho dna. Dokial
+  sa platnost nikde nezobrazovala, bol to len posun o den; odkedy ju karta
+  hovori nahlas, bola by to nepravda.
+
+### Notes
+- Uz nazbierane `plus_ones` na oznamoch ostavaju v databaze, len ich nema kto
+  zobrazit. Nic sa nemaze.
+- `/info` v sekcii `aj mňa` hovori, preco to na oznamoch nie je. Sekcia uz
+  predtym tvrdila „nie je to pacik" — na ozname to prestavalo byt pravda.
+
 ## [0.2.9] — 2026-08-28
 
 Odpoved operatora sa zlievala s hlasenim pod nou. Nebolo to tym, ze by bola

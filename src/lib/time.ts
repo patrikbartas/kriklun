@@ -16,3 +16,14 @@ export function isExpired(iso: string | null): boolean {
   if (!iso) return false;
   return new Date(iso).getTime() < Date.now();
 }
+
+// Problem starne: cislo v hlavicke je tlak, ako dlho sa nan nikto nepozrel.
+// Oznam neodpocitava dozadu, ale dopredu - nezaujima, ako dlho tu visi, ale
+// dokedy este plati.
+export function untilLabel(iso: string): string {
+  const d = new Date(iso).toLocaleDateString("sk-SK", {
+    day: "numeric",
+    month: "numeric",
+  });
+  return `platí do ${d}`;
+}
