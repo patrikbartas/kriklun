@@ -142,8 +142,55 @@ drôtený obrys — len vlasové hrany, žiadna výplň — a jadro ostane plnou
 
 Interakcia je z veľkej časti napísaná — miestnosť je len ďalšia doska, hover a
 klik už existujú, a „vysunutie hornej časti" je tá istá funkcia zmäkčenia, akú
-používa prelet kamery. **Celá cena sedí v geometrii:** 11 ateliérov + 2 chodby
-+ WC M + WC Ž + 2 schodiská + výťah + sprcha + umyváreň ≈ 20 obrysov.
+používa prelet kamery. Celá cena sedí v geometrii.
+
+### Program 2NP — 23 zón
+
+Potvrdené Patrikom `2026-08-28`:
+
+**13 prenajímateľných ateliérov** · serverovňa · WC muži · WC ženy · hlavné
+schodisko · zadné schodisko · chodba · umyváreň · sprcha · nákladný výťah ·
+hlavný výťah
+
+Všetko sú obdĺžniky. **Jediná výnimka je umyváreň — má tvar L.**
+
+### Dve cesty dnu, a tá lacnejšia je pravdepodobne správna
+
+Patrik to zadal explicitne ako **schému, nie presnú reprezentáciu**. To mení
+požiadavku rádovo, a treba to povedať nahlas:
+
+> Pri schéme musí sedieť **topológia, nie rozmery.** Poradie miestností pozdĺž
+> chodby a to, na ktorej strane ležia. Šírky sa môžu dopočítať.
+
+Ľudia sa v takom diagrame orientujú vetou „môj ateliér je štvrtý od hlavného
+schodiska, po pravej". Ak sedí poradie a strana, diagram funguje, aj keď je
+každý ateliér nakreslený rovnako široký. Ak poradie nesedí, nepomôžu ani presné
+kóty.
+
+**Cesta A — schéma (odporúčaná, netreba CAD).** Nezadávať 23 obdĺžnikov, ale
+popísať usporiadanie a nechať kód dopočítať polohy:
+
+```ts
+const CHODBA_SIRKA = 2.5;
+const SEVER = ["atelier-1", "atelier-2", "wc-z", ...];  // v poradí od hlavného schodiska
+const JUH   = ["serverovna", "atelier-8", ...];
+```
+
+Kód rozdelí dĺžku traktu (58,5 m) medzi miestnosti v rade. Kto je výrazne
+väčší alebo menší, dostane váhu. Umyváreň ako jediná dostane obrys ručne, lebo
+je to L.
+
+Výhoda nie je len v tom, že sa píše menej. Zmena poradia je presun jedného
+riadku, nie prepočet susedných obdĺžnikov. A diagram vyzerá ako diagram — nepredstiera
+zameranie, ktoré nie je.
+
+Vstup od Patrika: **postaviť sa pri hlavnom schodisku a vymenovať, čo je vľavo
+a čo vpravo, v poradí.** To je celé. Plus či sú ateliéry zhruba rovnaké a či
+majú čísla, ktoré ľudia používajú.
+
+**Cesta B — presnosť (DXF alebo IFC).** Nižšie. Má zmysel až vtedy, keby sa
+model mal stať podkladom, nie obrázkom — teda pravdepodobne nikdy, viď
+*Napätie s tým, čo sme sľúbili*.
 
 ### Ak je zdroj ArchiCAD alebo Revit
 
@@ -193,7 +240,7 @@ existovať. Písať parser proti predstave výkresu nemá zmysel.
 `zones.ts`. Boli by to dva zoznamy toho istého, ktoré sa časom rozídu. Malo by
 to byť jedno miesto, kde zóna má meno, obrys aj podlažie.
 
-**„Môj ateliér" je jedenásť rôznych miestností.** Dnes je to jedna zóna, lebo to
+**„Môj ateliér" je trinásť rôznych miestností.** Dnes je to jedna zóna, lebo to
 nikto nepotreboval rozlíšiť. Ak sa ateliéry stanú klikateľnými kvádrikmi, musia
 dostať mená — a to znamená, že ľudia začnú hlásiť po miestnostiach a operátor
 ich tak uvidí. To je zmena produktu, nie grafiky.
@@ -209,3 +256,13 @@ a Kriklún zámerne nie.
 
 Neznamená to, že sa to nesmie. Znamená to, že sa to nesmie stať nechtiac —
 a že ak sa to urobí, prepíše sa aj ten sľub, nahlas a naraz s tým.
+
+Schéma (cesta A) toto napätie zmierňuje, ale neruší. Dvadsaťtri pomenovaných
+miestností je register aj vtedy, keď sú nakreslené ako rovnako široké kvádriky.
+
+## Nezrovnalosť na overenie
+
+`README.md` aj `/info` hovoria „jedenásť ateliérov". Patrik `2026-08-28` uviedol
+**trinásť prenajímateľných**. Môže platiť oboje — trinásť jednotiek, jedenásť
+obsadených — preto to zatiaľ nie je prepísané. Treba to rozhodnúť skôr, než sa
+ateliéry stanú zónami, lebo to je text, ktorý číta používateľ.
