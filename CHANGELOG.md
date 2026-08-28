@@ -5,6 +5,33 @@ Prehľad zámeru je v `README.md`.
 
 Beží na `https://kriklun.com`.
 
+## [0.2.8] — 2026-08-28
+
+Dole stali tri rovnako hlasne odkazy vedla seba a nahlasenie — jediny dovod,
+preco appka existuje — bolo jednou tretinou listy. Kto pride k rozbitej
+sprche, ma vidiet jedno tlacidlo, nie menu.
+
+### Changed
+- Dole je uz len nahlasenie. Jedna invertovana plocha cez celu sirku, s
+  pixelovou ikonou fotoaparatu a textom `nahlásiť problém`. Je to jediné
+  miesto v appke, kde je pozadie a text naopak — plna plocha odteraz znamena
+  jedinu vec: toto odosle.
+- Odosielacie tlacidlo vo formulari je invertovane rovnako. Inak by cesta
+  koncila tichsie, nez zacala.
+- Nastenka je na mene `KRIKLUN` v hlavicke. Bolo tam odjakziva, len to
+  prekryvala lista.
+- `moje` a `info` su ikony vpravo hore. Kluc uz nie je easter egg vedla loga —
+  stoji vpravo ako otvoreny odkaz, vedla neho zajac z klobuka na `moje`.
+- Na `/nahlasit` sa spodne tlacidlo skryva. Ukazovalo by na stranku, na ktorej
+  uz stojis, a nad odosielacim tlacidlom by sa dalo pomylit s nim.
+
+### Notes
+- Ikony su pixelove (Streamline), rovnaka rec ako wordmark. Zdrojove `.svg`
+  maju farbu zapecatenu na cierno, tak ich nesieme ako cesty vo `currentColor`
+  v `src/components/ui/pixel.tsx` — inak by v tmavom mode zmizli. Povodne
+  `.svg` lezia v `assets/icons/` ako zdroj; appka ich necita.
+- Animovany `WrenchIcon` na `motion` sme zmazali, uz ho nema kto volat.
+
 ## [0.2.7] — 2026-08-27
 
 `www.kriklun.com` končilo na varovaní prehliadača. DNS síce ukazovalo na Vercel,

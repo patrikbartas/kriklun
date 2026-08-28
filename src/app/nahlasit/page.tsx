@@ -180,11 +180,17 @@ export default function Nahlasit() {
         </p>
       )}
 
+      {/* Odoslanie je invertovane rovnako ako tlacidlo dole na nastenke. Ta
+          plna plocha znamena v celej appke jedinu vec: teraz to odide. */}
       <button
         onClick={send}
         disabled={busy}
-        className="hair w-full border py-4"
-        style={{ opacity: busy ? 0.4 : 1 }}
+        className="w-full py-4"
+        style={{
+          background: "var(--fg)",
+          color: "var(--bg)",
+          opacity: busy ? 0.4 : 1,
+        }}
       >
         {busy ? "…" : label}
       </button>
